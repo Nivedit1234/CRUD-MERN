@@ -59,6 +59,55 @@ app.get('/books', (req, res) => {
   res.send({ msg: 'gello world' });
 });
 
+app.get('/getUsers/:id', (req, res) => {
+  const id = req.params.id;
+  UserModel.findById({ _id: id })
+    .then((users) => {
+      res.json(users);
+      // console.log(users);
+    })
+    .catch((err) => {
+      res.json(err);
+      //console.log(err);
+    });
+  // res.json('Hello World');
+});
+
+app.put('/updateUser/:id', async (req, res) => {
+  try {
+    const id = req.params.id;
+    const { name, age, email } = req.body;
+    console.log(name + age + email);
+    let response = await UserModel.findByIdAndUpdate(
+      { _id: id },
+      { name: req.body.name, age: req.body.age, email: req.body.email }
+    );
+
+    res.json(response.data);
+    console.log(response.data);
+  } catch (error) {
+    res.json(error);
+    console.log(error);
+  }
+
+  // .then((users) => {
+  //   res.json(users);
+  //   console.log(users);
+  // })
+  // .catch((err) => {
+  //   console.log(err);
+  //   res.json(err);
+  // });
+  //console.log('Hello');
+});
+
+app.delete('/deleteUser/:id', (req, res) => {
+  const id = req.params.id;
+  UserModel.findByIdAndDelete({ _id: id })
+    .then((res) => res.json(res))
+    .catch((err) => res.json(err));
+});
+
 app.post('/createUser', (req, res) => {
   //console.log(req.body);
   //res.json(req.body);

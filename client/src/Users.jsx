@@ -20,7 +20,17 @@ const Users = () => {
 
     }, [])
 
+   const handleClick=(id)=>{
 
+         axios.delete('http://localhost:3001/deleteUser/'+id)
+         .then(result=>
+            {
+                
+                console.log(result)
+                window.location.reload();
+            })
+         .catch(err=>(console.log(err)))     
+   }
 
     return (
         <div className='d-flex vh-100 bg-black justify-content-center align-items-center'>
@@ -46,14 +56,12 @@ const Users = () => {
                                     <td>{user.email}</td>
                                     <td>{user.age} </td>
                                     <td>
-                                        <Link to='/update'>
+                                        <Link to={`/update/${user._id}`}>
                                             <button className='btn btn-success'>Edit</button>
                                         </Link>
                                     </td>
                                     <td>
-                                        <Link to='/delete'>
-                                            <button className='btn btn-danger'>Delete</button>
-                                        </Link>
+                                     <button className='btn btn-danger' onClick={(e)=>{handleClick(user._id)}}>Delete</button>
                                     </td>
                                 </tr>
 
